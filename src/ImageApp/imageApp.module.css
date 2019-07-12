@@ -1,0 +1,41 @@
+/* Базовые стили */
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  color: #212121;
+  background-color: #fff;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Стили компонента App */
+.app {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 24px;
+}
+
+.app > button {
+  margin: 0 auto;
+  width: 150px;
+  height: 50px;
+  background-color: rgb(92, 197, 65);
+  color: rgb(214, 214, 214);
+  border: 2px solid rgb(214, 214, 214);
+  text-transform: uppercase;
+}
