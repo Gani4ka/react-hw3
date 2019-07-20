@@ -1,15 +1,16 @@
 .backdrop {
-  height: 100vw;
-  background-color: rgba(122, 119, 119, 0.466);
+  background-color: rgba(122, 119, 119, 0.7);
   overflow: hidden;
-  display: flex;
-  justify-content: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .backdrop div {
-  height: max-content;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  height: 100%;
 }

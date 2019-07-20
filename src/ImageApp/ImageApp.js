@@ -17,27 +17,15 @@ class ImageApp extends Component {
 
   imgTags = [];
 
-  elemToScroll = React.createRef();
-
   style = { possition: 'fixed', bottom: 0 };
 
   state = {
     value: '',
     images: [],
+    isShowMore: false,
     isLargeImage: false,
     currentId: '',
   };
-
-  // почему не получается повесить скрол на клик кнопки??
-  componentDidUpdate() {
-    const { isLargeImage } = this.state;
-    if (!isLargeImage) {
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: 'smooth',
-      });
-    }
-  }
 
   fetcher = page => {
     axios
@@ -50,6 +38,19 @@ class ImageApp extends Component {
         this.setState(({ images }) => ({
           images: [...images, ...this.mapper(response.data.hits)],
         })),
+      )
+      .then(() => {
+        if (this.state.isShowMore) {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+          });
+        }
+      })
+      .then(() =>
+        this.setState({
+          isShowMore: false,
+        }),
       );
   };
 
@@ -61,15 +62,15 @@ class ImageApp extends Component {
     };
   };
 
-  showMore = this.counter(this.fetcher);
+  showMore = () => {
+    this.setState({
+      isShowMore: true,
+    });
+    this.counter(this.fetcher)();
+  };
 
   onSubmit = value => {
-    window.scrollTo({
-      top: 1000,
-      behavior: 'smooth',
-    });
-
-    this.setState({ value, images: [] }, function() {
+    this.setState({ value, images: [] }, () => {
       this.fetcher(this.PAGE_NUMBER);
     });
   };
@@ -114,21 +115,20 @@ class ImageApp extends Component {
     const { images, currentId, isLargeImage } = this.state;
     return (
       <>
-        {!isLargeImage && (
-          <div className={[styles.app]}>
-            <SearchForm onSubmit={this.onSubmit} />
-            <Gallery
-              images={images}
-              showLargeImage={this.showLargeImage}
-              isLargeImage={isLargeImage}
-            />
-            {images.length > 0 && (
-              <button type="button" onClick={this.showMore}>
-                show more
-              </button>
-            )}
-          </div>
-        )}
+        <div className={[styles.app]}>
+          <SearchForm onSubmit={this.onSubmit} />
+          <Gallery
+            images={images}
+            showLargeImage={this.showLargeImage}
+            isLargeImage={isLargeImage}
+          />
+          {images.length > 0 && (
+            <button type="button" onClick={this.showMore}>
+              show more
+            </button>
+          )}
+        </div>
+
         {isLargeImage && (
           <Popup
             img={images.filter(el => el.id === currentId)}
