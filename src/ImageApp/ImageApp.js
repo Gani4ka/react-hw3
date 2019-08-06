@@ -22,7 +22,6 @@ class ImageApp extends Component {
   state = {
     value: '',
     images: [],
-    isShowMore: false,
     isLargeImage: false,
     currentId: '',
   };
@@ -36,22 +35,15 @@ class ImageApp extends Component {
       )
       .then(response =>
         this.setState(({ images }) => ({
-          images: [...images, ...this.mapper(response.data.hits)],
+          images: [...this.mapper(response.data.hits), ...images],
         })),
       )
       .then(() => {
-        if (this.state.isShowMore) {
-          window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth',
-          });
-        }
-      })
-      .then(() =>
-        this.setState({
-          isShowMore: false,
-        }),
-      );
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      });
   };
 
   counter = fn => {
@@ -62,12 +54,7 @@ class ImageApp extends Component {
     };
   };
 
-  showMore = () => {
-    this.setState({
-      isShowMore: true,
-    });
-    this.counter(this.fetcher)();
-  };
+  showMore = this.counter(this.fetcher);
 
   onSubmit = value => {
     this.setState({ value, images: [] }, () => {
